@@ -3,6 +3,7 @@
   "name": "mitsuhiko.at",
   "alias": ["mitsuhko.at", "mitsuhiko-at"],
   "builds": [
+    { "src": "*.ico", "use": "@now/static" },
     { "src": "*.html", "use": "@now/static" },
     { "src": "*.js", "use": "@now/static" },
     { "src": "*.jpg", "use": "@now/static" }
