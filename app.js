@@ -258,7 +258,7 @@ function MitsuhikoApp() {
             parseInt(params.config, 10) === i ? "config active" : "config";
         }
         var filterNodes = this.filterContainer.getElementsByClassName("filter");
-        for (var i = 0; i < configNodes.length; i++) {
+        for (var i = 0; i < filterNodes.length; i++) {
           filterNodes[i].className =
             parseInt(params.filter, 10) === i ? "filter active" : "filter";
         }
