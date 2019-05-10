@@ -1,4 +1,4 @@
-var memeConfigs = [
+var configs = [
   {
     image: "image1-compressed.jpg",
     width: 4032,
@@ -96,13 +96,24 @@ function MitsuhikoApp() {
       return params;
     },
 
-    init: function(config) {
-      this.config = config;
+    randomChoice: function(choices) {
+      var index = Math.floor(Math.random() * choices.length);
+      return choices[index];
+    },
+
+    init: function(configs) {
+      this.configs = configs;
 
       var params = this.parseQueryParams();
       this.alignText = params.alignText || "center";
       this.fontFamily = params.fontFamily || "Stylish";
       this.text = params.text;
+
+      if (params.config !== undefined) {
+        this.config = configs[params.config];
+      } else {
+        this.config = this.randomChoice(configs);
+      }
 
       var containerNode = (this.containerNode = document.getElementById(
         "container"
@@ -112,7 +123,7 @@ function MitsuhikoApp() {
       var imageNode = (this.imageNode = this.imageNode = document.createElement(
         "img"
       ));
-      imageNode.src = config.image;
+      imageNode.src = this.config.image;
       imageNode.className = "background";
       containerNode.appendChild(imageNode);
 
@@ -129,6 +140,10 @@ function MitsuhikoApp() {
         this.alignText = params.alignText || "center";
         this.fontFamily = params.fontFamily || "Stylish";
         this.text = params.text;
+        if (params.config !== undefined) {
+          this.config = configs[params.config];
+          this.imageNode.src = this.config.image;
+        }
         this.drawText();
       }.bind(this);
 
@@ -139,12 +154,7 @@ function MitsuhikoApp() {
   };
 }
 
-function randomChoice(choices) {
-  var index = Math.floor(Math.random() * choices.length);
-  return choices[index];
-}
-
 window.onload = function() {
   var app = MitsuhikoApp();
-  app.init(randomChoice(memeConfigs));
+  app.init(configs);
 };
