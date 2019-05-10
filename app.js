@@ -53,7 +53,8 @@ function MitsuhikoApp() {
 
     init: function(config) {
       this.config = config;
-      this.text = window.location.hash.slice(1) || "mitsuhiko";
+      this.text =
+        window.decodeURIComponent(window.location.hash.slice(1)) || "mitsuhiko";
 
       // empty out container
       containerNode.innerHTML = "";
@@ -68,7 +69,7 @@ function MitsuhikoApp() {
       }.bind(this);
 
       window.onhashchange = function() {
-        this.text = window.location.hash.slice(1);
+        this.text = window.decodeURIComponent(window.location.hash.slice(1));
         this.drawText();
       }.bind(this);
 
