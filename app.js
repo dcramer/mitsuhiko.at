@@ -1,5 +1,7 @@
 var DEFAULT_FONT = "Baloo Bhai";
 
+var DEFAULT_TEXT_ALIGN = "center";
+
 var DEFAULT_TEXT = "hi armin!";
 
 var CORE_BOX_CONFIG = [
@@ -50,12 +52,12 @@ function MitsuhikoApp() {
       var numTextNodes = text.length;
 
       var textOffset = 0;
-      if (this.alignText == "center") {
+      if (this.textAlign == "center") {
         textOffset =
           numTextNodes < numBoxNodes
             ? parseInt((numBoxNodes - numTextNodes) / 2, 10)
             : 0;
-      } else if (this.alignText == "right") {
+      } else if (this.textAlign == "right") {
         textOffset = numBoxNodes - numTextNodes;
       }
 
@@ -107,7 +109,7 @@ function MitsuhikoApp() {
 
     bindConfigFromParams: function() {
       var params = this.parseQueryParams();
-      this.alignText = params.alignText || "center";
+      this.textAlign = params.textAlign || DEFAULT_TEXT_ALIGN;
       this.fontFamily = params.fontFamily || DEFAULT_FONT;
       this.fontSize = params.text.length > 1 ? "3vmax" : "6vmax";
       return params;
