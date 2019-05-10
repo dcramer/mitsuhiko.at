@@ -14,20 +14,30 @@
     body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
     }
     img {
       max-width: 100%;
       max-height: 100%;
     }
     body {
-      display: flex;
-      align-items: center;
       background: url("sentry-pattern.png");
     }
-    #container {
-      flex: 1;
+    .root {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: center;
       position: relative;
+      flex: 1;
+    }
+    .container {
+      flex-grow: 1;
+      position: relative;
+      overflow: hidden;
+      max-height: 100%;
+    }
+    .two-col .container {
+      max-width: 50%;
     }
     .background {
       z-index: 50;

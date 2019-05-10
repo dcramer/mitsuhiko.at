@@ -41,14 +41,14 @@ function MitsuhikoApp() {
       }
     },
 
-    drawText: function() {
-      this.clearChildren(this.lettersNode);
+    drawText: function(imageNode, parentNode, text) {
+      this.clearChildren(parentNode);
 
-      var widthFactor = this.imageNode.width / this.config.width;
-      var heightFactor = this.imageNode.height / this.config.height;
+      var widthFactor = imageNode.width / this.config.width;
+      var heightFactor = imageNode.height / this.config.height;
 
       var numBoxNodes = this.config.boxes.length;
-      var numTextNodes = this.text.length;
+      var numTextNodes = text.length;
 
       var textOffset = 0;
       if (this.alignText == "center") {
@@ -69,13 +69,13 @@ function MitsuhikoApp() {
         boxNode.style.top = boxConfig.y * heightFactor;
         boxNode.style.transform = "rotate(" + boxConfig.rotate + ")";
         boxNode.style.fontFamily = '"' + this.fontFamily + '", sans-serfi';
-        boxNode.style.fontSize = "6vw";
+        boxNode.style.fontSize = this.fontSize;
         boxNode.className = "letter";
 
         textNode = document.createElement("div");
-        textNode.innerText = this.text[i - textOffset] || "";
+        textNode.innerText = text[i - textOffset] || "";
         boxNode.appendChild(textNode);
-        this.lettersNode.appendChild(boxNode);
+        parentNode.appendChild(boxNode);
       }
     },
 
@@ -103,13 +103,14 @@ function MitsuhikoApp() {
       return choices[index];
     },
 
-    init: function(configs) {
+    init: function(configs, parentNode) {
       this.configs = configs;
 
       var params = this.parseQueryParams();
       this.alignText = params.alignText || "center";
       this.fontFamily = params.fontFamily || DEFAULT_FONT;
-      this.text = params.text;
+      let textNodes = params.text.split("|");
+      this.fontSize = textNodes.length > 1 ? "3vmax" : "6vmax";
 
       if (params.config !== undefined) {
         this.config = configs[params.config];
@@ -117,44 +118,59 @@ function MitsuhikoApp() {
         this.config = this.randomChoice(configs);
       }
 
-      var containerNode = (this.containerNode = document.getElementById(
-        "container"
-      ));
-      this.clearChildren(containerNode);
+      if (!parentNode) {
+        parentNode = document.body;
+      }
 
-      var lettersNode = (this.lettersNode = document.createElement("div"));
+      this.rootContainer = document.createElement("div");
+      this.rootContainer.className = "root";
+      if (textNodes.length > 1) {
+        this.rootContainer.className =
+          this.rootContainer.className + " two-col";
+      }
+      parentNode.appendChild(this.rootContainer);
+
+      for (var i = 0; i < textNodes.length; i++) {
+        this.renderOneConfig(this.rootContainer, this.config, textNodes[i]);
+      }
+
+      // window.onhashchange = function() {
+      //   var params = this.parseQueryParams();
+      //   this.alignText = params.alignText || "center";
+      //   this.fontFamily = params.fontFamily || DEFAULT_FONT;
+      //   this.text = params.text;
+      //   if (params.config !== undefined) {
+      //     this.config = configs[params.config];
+      //     imageNode.onload = function() {
+      //       this.drawText(imageNode, lettersNode);
+      //     }.bind(this);
+      //     imageNode.src = this.config.image;
+      //   } else {
+      //     this.drawText(imageNode, lettersNode);
+      //   }
+      // }.bind(this);
+    },
+
+    renderOneConfig(parentNode, config, text) {
+      var containerNode = document.createElement("div");
+      containerNode.className = "container";
+      parentNode.appendChild(containerNode);
+
+      var lettersNode = document.createElement("div");
       lettersNode.className = "letters";
       containerNode.appendChild(lettersNode);
 
-      var imageNode = (this.imageNode = this.imageNode = document.createElement(
-        "img"
-      ));
+      var imageNode = document.createElement("img");
       imageNode.onload = function() {
-        this.drawText();
+        this.drawText(imageNode, lettersNode, text);
       }.bind(this);
       imageNode.className = "background";
       containerNode.appendChild(imageNode);
 
-      imageNode.src = this.config.image;
-
-      window.onhashchange = function() {
-        var params = this.parseQueryParams();
-        this.alignText = params.alignText || "center";
-        this.fontFamily = params.fontFamily || DEFAULT_FONT;
-        this.text = params.text;
-        if (params.config !== undefined) {
-          this.config = configs[params.config];
-          this.imageNode.onload = function() {
-            this.drawText();
-          }.bind(this);
-          this.imageNode.src = this.config.image;
-        } else {
-          this.drawText();
-        }
-      }.bind(this);
+      imageNode.src = config.image;
 
       window.onresize = function() {
-        this.drawText();
+        this.drawText(imageNode, lettersNode, text);
       }.bind(this);
     }
   };
