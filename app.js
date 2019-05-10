@@ -50,11 +50,14 @@ function MitsuhikoApp() {
       var widthFactor = this.imageNode.width / this.config.width;
       var heightFactor = this.imageNode.height / this.config.height;
 
-      for (
-        var i = 0, boxConfig, boxNode, textNode;
-        i < this.config.boxes.length;
-        i++
-      ) {
+      var numBoxNodes = this.config.boxes.length;
+      var numTextNodes = this.text.length;
+      var textOffset =
+        numTextNodes < numBoxNodes
+          ? parseInt((numBoxNodes % numTextNodes) / 2, 10)
+          : 0;
+
+      for (var i = 0, boxConfig, boxNode, textNode; i < numBoxNodes; i++) {
         boxConfig = this.config.boxes[i];
         boxNode = document.createElement("div");
         boxNode.style.width = boxConfig.width * widthFactor;
@@ -66,7 +69,7 @@ function MitsuhikoApp() {
         boxNode.className = "letter";
 
         textNode = document.createElement("div");
-        textNode.innerText = this.text[i] || "";
+        textNode.innerText = this.text[i - textOffset] || "";
         boxNode.appendChild(textNode);
         this.lettersNode.appendChild(boxNode);
       }
