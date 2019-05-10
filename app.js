@@ -127,6 +127,9 @@ function MitsuhikoApp() {
         }
         if (params.buff === "1") params.config = 2;
         else if (params.poland === "1") params.config = 0;
+        else if (params.grayscale === "1") params.config = 3;
+        else if (params.invert === "1") params.config = 4;
+        else if (params.sepia === "1") params.config = 5;
       }
       params.text = params.text.split("|");
       return params;
