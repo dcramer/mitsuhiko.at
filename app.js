@@ -154,7 +154,7 @@ function MitsuhikoApp() {
     getRootContainerClassName: function(params) {
       var className = "root";
       if (params.text.length > 1) className += " two-col";
-      if (params.text.length > 3) className += " two-row";
+      if (params.text.length > 2) className += " two-row";
       return className;
     },
 
