@@ -34,9 +34,6 @@ var memeConfigs = [
 ];
 
 function MitsuhikoApp() {
-  var containerNode = document.getElementById("container");
-  //   var inputNode = document.getElementById("input");
-
   return {
     clearChildren: function(parentNode) {
       while (parentNode.firstChild) {
@@ -52,10 +49,16 @@ function MitsuhikoApp() {
 
       var numBoxNodes = this.config.boxes.length;
       var numTextNodes = this.text.length;
-      var textOffset =
-        numTextNodes < numBoxNodes
-          ? parseInt((numBoxNodes - numTextNodes) / 2, 10)
-          : 0;
+
+      var textOffset = 0;
+      if (this.alignText == "center") {
+        textOffset =
+          numTextNodes < numBoxNodes
+            ? parseInt((numBoxNodes - numTextNodes) / 2, 10)
+            : 0;
+      } else if (this.alignText == "right") {
+        textOffset = numBoxNodes - numTextNodes;
+      }
 
       for (var i = 0, boxConfig, boxNode, textNode; i < numBoxNodes; i++) {
         boxConfig = this.config.boxes[i];
@@ -80,6 +83,10 @@ function MitsuhikoApp() {
       this.text =
         window.decodeURIComponent(window.location.hash.slice(1)) || "mitsuhiko";
 
+      this.alignText = "center";
+      var containerNode = (this.containerNode = document.getElementById(
+        "container"
+      ));
       this.clearChildren(containerNode);
 
       var imageNode = (this.imageNode = this.imageNode = document.createElement(
