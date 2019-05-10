@@ -1,6 +1,6 @@
 var memeConfigs = [
   {
-    image: "image1.jpg",
+    image: "image1-compressed.jpg",
     width: 4032,
     height: 3024,
     boxes: [
@@ -16,7 +16,7 @@ var memeConfigs = [
     ]
   },
   {
-    image: "image2.jpg",
+    image: "image2-compressed.jpg",
     width: 4032,
     height: 3024,
     boxes: [
