@@ -68,6 +68,7 @@ function MitsuhikoApp() {
         boxNode.style.left = boxConfig.x * widthFactor;
         boxNode.style.top = boxConfig.y * heightFactor;
         boxNode.style.transform = "rotate(" + boxConfig.rotate + ")";
+        boxNode.style.fontFamily = '"' + this.fontFamily + '", sans-serfi';
         boxNode.style.fontSize = "6vw";
         boxNode.className = "letter";
 
@@ -78,12 +79,31 @@ function MitsuhikoApp() {
       }
     },
 
+    parseQueryParams: function() {
+      var hash = window.location.hash.substr(1);
+      var params = {
+        text: "mitsuhiko"
+      };
+      var hashBits = hash.split("&");
+      for (var i = 0, param; i < hashBits.length; i++) {
+        param = hashBits[i].split("=", 2);
+        if (param.length == 2) {
+          params[param[0]] = window.decodeURIComponent(param[1]);
+        } else {
+          params.text = window.decodeURIComponent(param[0]);
+        }
+      }
+      return params;
+    },
+
     init: function(config) {
       this.config = config;
-      this.text =
-        window.decodeURIComponent(window.location.hash.slice(1)) || "mitsuhiko";
 
-      this.alignText = "center";
+      var params = this.parseQueryParams();
+      this.alignText = params.alignText || "center";
+      this.fontFamily = params.fontFamily || "Stylish";
+      this.text = params.text;
+
       var containerNode = (this.containerNode = document.getElementById(
         "container"
       ));
@@ -105,7 +125,10 @@ function MitsuhikoApp() {
       }.bind(this);
 
       window.onhashchange = function() {
-        this.text = window.decodeURIComponent(window.location.hash.slice(1));
+        var params = this.parseQueryParams();
+        this.alignText = params.alignText || "center";
+        this.fontFamily = params.fontFamily || "Stylish";
+        this.text = params.text;
         this.drawText();
       }.bind(this);
 
