@@ -120,20 +120,20 @@ function MitsuhikoApp() {
       ));
       this.clearChildren(containerNode);
 
-      var imageNode = (this.imageNode = this.imageNode = document.createElement(
-        "img"
-      ));
-      imageNode.src = this.config.image;
-      imageNode.className = "background";
-      containerNode.appendChild(imageNode);
-
       var lettersNode = (this.lettersNode = document.createElement("div"));
       lettersNode.className = "letters";
       containerNode.appendChild(lettersNode);
 
+      var imageNode = (this.imageNode = this.imageNode = document.createElement(
+        "img"
+      ));
       imageNode.onload = function() {
         this.drawText();
       }.bind(this);
+      imageNode.className = "background";
+      containerNode.appendChild(imageNode);
+
+      imageNode.src = this.config.image;
 
       window.onhashchange = function() {
         var params = this.parseQueryParams();
@@ -142,9 +142,13 @@ function MitsuhikoApp() {
         this.text = params.text;
         if (params.config !== undefined) {
           this.config = configs[params.config];
+          this.imageNode.onload = function() {
+            this.drawText();
+          }.bind(this);
           this.imageNode.src = this.config.image;
+        } else {
+          this.drawText();
         }
-        this.drawText();
       }.bind(this);
 
       window.onresize = function() {
