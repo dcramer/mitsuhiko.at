@@ -1,5 +1,7 @@
 var DEFAULT_FONT = "Baloo Bhai";
 
+var DEFAULT_TEXT = "hi armin!";
+
 var CORE_BOX_CONFIG = [
   { width: 280, height: 445, x: 772, y: 815, rotate: "9.5deg" },
   { width: 265, height: 440, x: 1090, y: 925, rotate: "5deg" },
@@ -79,19 +81,21 @@ function MitsuhikoApp() {
     parseQueryParams: function() {
       var hash = window.location.hash.substr(1);
       var params = {
-        text: "mitsuhiko"
+        text: DEFAULT_TEXT
       };
-      var hashBits = hash.split("&");
-      for (var i = 0, param; i < hashBits.length; i++) {
-        param = hashBits[i].split("=", 2);
-        if (param.length == 2) {
-          params[param[0]] = window.decodeURIComponent(param[1]);
-        } else {
-          params.text = window.decodeURIComponent(param[0]);
+      if (hash.length) {
+        var hashBits = hash.split("&");
+        for (var i = 0, param; i < hashBits.length; i++) {
+          param = hashBits[i].split("=", 2);
+          if (param.length == 2) {
+            params[param[0]] = window.decodeURIComponent(param[1]);
+          } else {
+            params.text = window.decodeURIComponent(param[0]);
+          }
         }
+        if (params.buff === "1") params.config = 2;
+        else if (params.poland === "1") params.config = 0;
       }
-      if (params.buff === "1") params.config = 2;
-      else if (params.poland === "1") params.config = 0;
       params.text = params.text.split("|");
       return params;
     },
@@ -111,7 +115,6 @@ function MitsuhikoApp() {
 
     init: function(configs, parentNode) {
       var params = this.bindConfigFromParams();
-
       if (!parentNode) {
         parentNode = document.body;
       }
