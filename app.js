@@ -52,6 +52,15 @@ var filters = [
   },
   {
     imageFilter: "sepia(100%)"
+  },
+  {
+    imageFilter: "saturate(4)"
+  },
+  {
+    imageFilter: "hue-rotate(90deg)"
+  },
+  {
+    imageFilter: "hue-rotate(180deg)"
   }
 ];
 
