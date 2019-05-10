@@ -1,15 +1,15 @@
 var DEFAULT_FONT = "Baloo Bhai";
 
 var CORE_BOX_CONFIG = [
-  { width: 280, height: 445, x: 772, y: 800, rotate: "9.5deg" },
-  { width: 265, height: 440, x: 1090, y: 910, rotate: "5deg" },
+  { width: 280, height: 445, x: 772, y: 815, rotate: "9.5deg" },
+  { width: 265, height: 440, x: 1090, y: 925, rotate: "5deg" },
   { width: 250, height: 440, x: 1370, y: 930, rotate: "1deg" },
   { width: 245, height: 410, x: 1655, y: 863, rotate: "0" },
   { width: 245, height: 410, x: 1925, y: 840, rotate: "0" },
   { width: 245, height: 420, x: 2230, y: 885, rotate: "9deg" },
-  { width: 240, height: 400, x: 2540, y: 840, rotate: "-2deg" },
-  { width: 245, height: 400, x: 2825, y: 790, rotate: "-2deg" },
-  { width: 250, height: 405, x: 3130, y: 800, rotate: "-3.5deg" }
+  { width: 240, height: 400, x: 2540, y: 855, rotate: "-2deg" },
+  { width: 245, height: 400, x: 2825, y: 795, rotate: "-2deg" },
+  { width: 250, height: 405, x: 3130, y: 815, rotate: "-3.5deg" }
 ];
 
 var configs = [
