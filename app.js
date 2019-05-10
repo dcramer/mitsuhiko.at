@@ -299,7 +299,10 @@ function MitsuhikoApp() {
           filter.textColor
         );
 
-        window.onresize = function() {
+        window.onresize = function(imageNode) {
+          var widthFactor = imageNode.width / config.width;
+          var heightFactor = imageNode.height / config.height;
+
           this.drawText(
             lettersNode,
             config.boxes,
@@ -308,7 +311,7 @@ function MitsuhikoApp() {
             text,
             filter.textColor
           );
-        }.bind(this);
+        }.bind(this, imageNode);
       }.bind(this);
       imageNode.className = "background";
       containerNode.appendChild(imageNode);
