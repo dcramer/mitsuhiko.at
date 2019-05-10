@@ -1,0 +1,13 @@
+{
+  "name": "mitsuhiko.at",
+  "version": "0.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dcramer/mitsuhiko.at.git"
+  },
+  "dependencies": {
+    "now": "^15.2.0"
+  },
+  "devDependencies": {}
+}
