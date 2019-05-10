@@ -151,6 +151,13 @@ function MitsuhikoApp() {
       return params;
     },
 
+    getRootContainerClassName: function(params) {
+      var className = "root";
+      if (params.text.length > 1) className += " two-col";
+      if (params.text.length > 3) className += " two-row";
+      return className;
+    },
+
     init: function(configs, parentNode) {
       var params = this.bindConfigFromParams();
       if (!parentNode) {
@@ -158,8 +165,7 @@ function MitsuhikoApp() {
       }
 
       this.rootContainer = document.createElement("div");
-      this.rootContainer.className =
-        params.text.length > 1 ? "root two-col" : "root";
+      this.rootContainer.className = this.getRootContainerClassName(params);
       parentNode.appendChild(this.rootContainer);
 
       for (var i = 0; i < params.text.length; i++) {
@@ -169,8 +175,7 @@ function MitsuhikoApp() {
       window.onhashchange = function() {
         var params = this.bindConfigFromParams();
         this.clearChildren(this.rootContainer);
-        this.rootContainer.className =
-          params.text.length > 1 ? "root two-col" : "root";
+        this.rootContainer.className = this.getRootContainerClassName(params);
         for (var i = 0; i < params.text.length; i++) {
           this.renderOneConfig(this.rootContainer, params, params.text[i]);
         }
