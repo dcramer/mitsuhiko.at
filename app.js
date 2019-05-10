@@ -34,6 +34,28 @@ var configs = [
     width: 4032,
     height: 3024,
     boxes: CORE_BOX_CONFIG
+  },
+  {
+    image: "image3.jpg",
+    width: 4032,
+    height: 3024,
+    boxes: CORE_BOX_CONFIG,
+    imageFilter: "grayscale(100%)"
+  },
+  {
+    image: "image3.jpg",
+    width: 4032,
+    height: 3024,
+    boxes: CORE_BOX_CONFIG,
+    imageFilter: "invert(100%)",
+    textColor: "#fff"
+  },
+  {
+    image: "image3.jpg",
+    width: 4032,
+    height: 3024,
+    boxes: CORE_BOX_CONFIG,
+    imageFilter: "sepia(100%)"
   }
 ];
 
@@ -45,7 +67,14 @@ function MitsuhikoApp() {
       }
     },
 
-    drawText: function(parentNode, boxes, widthFactor, heightFactor, text) {
+    drawText: function(
+      parentNode,
+      boxes,
+      widthFactor,
+      heightFactor,
+      text,
+      textColor
+    ) {
       this.clearChildren(parentNode);
 
       var numBoxNodes = boxes.length;
@@ -68,6 +97,7 @@ function MitsuhikoApp() {
         boxNode.style.height = boxConfig.height * heightFactor;
         boxNode.style.left = boxConfig.x * widthFactor;
         boxNode.style.top = boxConfig.y * heightFactor;
+        boxNode.style.color = textColor || "#000";
         boxNode.style.transform = "rotate(" + boxConfig.rotate + ")";
         boxNode.style.fontFamily = '"' + this.fontFamily + '", sans-serfi';
         boxNode.style.fontSize = this.fontSize;
@@ -167,7 +197,8 @@ function MitsuhikoApp() {
           config.boxes,
           widthFactor,
           heightFactor,
-          text
+          text,
+          config.textColor
         );
 
         window.onresize = function() {
@@ -176,7 +207,8 @@ function MitsuhikoApp() {
             config.boxes,
             widthFactor,
             heightFactor,
-            text
+            text,
+            config.textColor
           );
         }.bind(this);
       }.bind(this);
@@ -184,6 +216,7 @@ function MitsuhikoApp() {
       containerNode.appendChild(imageNode);
 
       imageNode.src = config.image;
+      imageNode.style.filter = config.imageFilter || "none";
     }
   };
 }
