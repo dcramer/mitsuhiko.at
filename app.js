@@ -180,6 +180,35 @@ function MitsuhikoApp() {
           this.renderOneConfig(this.rootContainer, params, params.text[i]);
         }
       }.bind(this);
+
+      var configContainer = document.createElement("div");
+      configContainer.className = "config-selector";
+      parentNode.appendChild(configContainer);
+      for (var i = 0, config, configNode, imgNode; i < configs.length; i++) {
+        config = configs[i];
+        configNode = document.createElement("a");
+        configNode.className = "config";
+        configNode.onclick = function(configNum, e) {
+          e.preventDefault();
+
+          var params = this.parseQueryParams();
+          params.config = configNum;
+          var query = (params.text || []).join("|") + "&";
+          for (var key in params) {
+            if (key === "text") {
+              continue;
+            }
+            query +=
+              encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+          }
+          window.location.href = "#" + query;
+        }.bind(this, i);
+        imgNode = document.createElement("img");
+        imgNode.src = config.image;
+        imgNode.style.filter = config.imageFilter;
+        configNode.appendChild(imgNode);
+        configContainer.appendChild(configNode);
+      }
     },
 
     renderOneConfig(parentNode, params, text) {
