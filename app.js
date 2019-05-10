@@ -119,7 +119,7 @@ function MitsuhikoApp() {
           param = hashBits[i].split("=", 2);
           if (param.length == 2) {
             params[param[0]] = window.decodeURIComponent(param[1]);
-          } else {
+          } else if (param[0].length) {
             params.text = window.decodeURIComponent(param[0]);
           }
         }
@@ -287,7 +287,7 @@ function MitsuhikoApp() {
           widthFactor,
           heightFactor,
           text,
-          config.textColor
+          filter.textColor
         );
 
         window.onresize = function() {
