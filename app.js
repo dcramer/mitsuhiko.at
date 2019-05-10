@@ -22,16 +22,14 @@ function MitsuhikoApp() {
   //   var inputNode = document.getElementById("input");
 
   return {
-    clearText: function() {
-      let childNodes = containerNode.getElementsByClassName("letter");
-      for (var i = 0, childNode; i < childNodes.length; i++) {
-        childNode = childNodes[i];
-        containerNode.removeChild(childNode);
+    clearChildren: function(parentNode) {
+      while (parentNode.firstChild) {
+        parentNode.removeChild(parentNode.firstChild);
       }
     },
 
     drawText: function() {
-      this.clearText();
+      this.clearChildren(this.lettersNode);
 
       var widthFactor = this.imageNode.width / this.config.width;
       var heightFactor = this.imageNode.height / this.config.height;
@@ -47,7 +45,7 @@ function MitsuhikoApp() {
         boxNode.style.fontSize = 100;
         boxNode.className = "letter";
         boxNode.innerText = this.text[i] || "";
-        containerNode.appendChild(boxNode);
+        this.lettersNode.appendChild(boxNode);
       }
     },
 
@@ -56,13 +54,18 @@ function MitsuhikoApp() {
       this.text =
         window.decodeURIComponent(window.location.hash.slice(1)) || "mitsuhiko";
 
-      // empty out container
-      containerNode.innerHTML = "";
+      this.clearChildren(containerNode);
 
-      var imageNode = (this.imageNode = document.createElement("img"));
+      var imageNode = (this.imageNode = this.imageNode = document.createElement(
+        "img"
+      ));
       imageNode.src = config.image;
       imageNode.className = "background";
       containerNode.appendChild(imageNode);
+
+      var lettersNode = (this.lettersNode = document.createElement("div"));
+      lettersNode.className = "letters";
+      containerNode.appendChild(lettersNode);
 
       imageNode.onload = function() {
         this.drawText();
