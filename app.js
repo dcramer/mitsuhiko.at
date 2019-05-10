@@ -6,6 +6,8 @@ var DEFAULT_TEXT = "hi armin!";
 
 var DEFAULT_CONFIG = 1;
 
+var DEFAULT_FILTER = 0;
+
 var CORE_BOX_CONFIG = [
   { width: 280, height: 445, x: 772, y: 815, rotate: "9.5deg" },
   { width: 265, height: 440, x: 1090, y: 925, rotate: "5deg" },
@@ -36,27 +38,19 @@ var configs = [
     width: 4032,
     height: 3024,
     boxes: CORE_BOX_CONFIG
-  },
+  }
+];
+
+var filters = [
+  {},
   {
-    image: "image3.jpg",
-    width: 4032,
-    height: 3024,
-    boxes: CORE_BOX_CONFIG,
     imageFilter: "grayscale(100%)"
   },
   {
-    image: "image3.jpg",
-    width: 4032,
-    height: 3024,
-    boxes: CORE_BOX_CONFIG,
     imageFilter: "invert(100%)",
     textColor: "#fff"
   },
   {
-    image: "image3.jpg",
-    width: 4032,
-    height: 3024,
-    boxes: CORE_BOX_CONFIG,
     imageFilter: "sepia(100%)"
   }
 ];
@@ -116,7 +110,8 @@ function MitsuhikoApp() {
       var hash = window.location.hash.substr(1);
       var params = {
         text: DEFAULT_TEXT,
-        config: DEFAULT_CONFIG
+        config: DEFAULT_CONFIG,
+        filter: DEFAULT_FILTER
       };
       if (hash.length) {
         var hashBits = hash.split("&");
@@ -128,11 +123,11 @@ function MitsuhikoApp() {
             params.text = window.decodeURIComponent(param[0]);
           }
         }
-        if (params.buff === "1") params.config = 2;
-        else if (params.poland === "1") params.config = 0;
-        else if (params.grayscale === "1") params.config = 3;
-        else if (params.invert === "1") params.config = 4;
-        else if (params.sepia === "1") params.config = 5;
+        if (params.buff === "1") params.config = "2";
+        else if (params.poland === "1") params.config = "0";
+        else if (params.grayscale === "1") params.config = "3";
+        else if (params.invert === "1") params.config = "4";
+        else if (params.sepia === "1") params.config = "5";
       }
       params.text = params.text.split("|");
       return params;
@@ -158,7 +153,7 @@ function MitsuhikoApp() {
       return className;
     },
 
-    init: function(configs, parentNode) {
+    init: function(configs, filters, parentNode) {
       var params = this.bindConfigFromParams();
       if (!parentNode) {
         parentNode = document.body;
@@ -172,22 +167,16 @@ function MitsuhikoApp() {
         this.renderOneConfig(this.rootContainer, params, params.text[i]);
       }
 
-      window.onhashchange = function() {
-        var params = this.bindConfigFromParams();
-        this.clearChildren(this.rootContainer);
-        this.rootContainer.className = this.getRootContainerClassName(params);
-        for (var i = 0; i < params.text.length; i++) {
-          this.renderOneConfig(this.rootContainer, params, params.text[i]);
-        }
-      }.bind(this);
-
-      var configContainer = document.createElement("div");
+      var configContainer = (this.configContainer = document.createElement(
+        "div"
+      ));
       configContainer.className = "config-selector";
       parentNode.appendChild(configContainer);
       for (var i = 0, config, configNode, imgNode; i < configs.length; i++) {
         config = configs[i];
         configNode = document.createElement("a");
-        configNode.className = "config";
+        configNode.className =
+          parseInt(params.config, 10) === i ? "config active" : "config";
         configNode.onclick = function(configNum, e) {
           e.preventDefault();
 
@@ -199,26 +188,86 @@ function MitsuhikoApp() {
               continue;
             }
             query +=
-              encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+              encodeURIComponent(key) +
+              "=" +
+              encodeURIComponent(params[key]) +
+              "&";
           }
           window.location.href = "#" + query;
         }.bind(this, i);
         imgNode = document.createElement("img");
         imgNode.src = config.image;
-        imgNode.style.filter = config.imageFilter;
         configNode.appendChild(imgNode);
         configContainer.appendChild(configNode);
       }
+
+      var filterContainer = (this.filterContainer = document.createElement(
+        "div"
+      ));
+      filterContainer.className = "filter-selector";
+      parentNode.appendChild(filterContainer);
+      for (var i = 0, filter, filterNode, imgNode; i < filters.length; i++) {
+        filter = filters[i];
+        filterNode = document.createElement("a");
+        filterNode.className =
+          parseInt(params.filter, 10) === i ? "filter active" : "filter";
+        filterNode.onclick = function(filterNum, e) {
+          e.preventDefault();
+
+          var params = this.parseQueryParams();
+          params.filter = filterNum;
+          var query = (params.text || []).join("|") + "&";
+          for (var key in params) {
+            if (key === "text") {
+              continue;
+            }
+            query +=
+              encodeURIComponent(key) +
+              "=" +
+              encodeURIComponent(params[key]) +
+              "&";
+          }
+          window.location.href = "#" + query;
+        }.bind(this, i);
+        imgNode = document.createElement("img");
+        imgNode.src = configs[parseInt(params.config, 10) || 0].image;
+        imgNode.style.filter = filter.imageFilter;
+        filterNode.appendChild(imgNode);
+        filterContainer.appendChild(filterNode);
+      }
+
+      window.onhashchange = function() {
+        var params = this.bindConfigFromParams();
+        this.clearChildren(this.rootContainer);
+        this.rootContainer.className = this.getRootContainerClassName(params);
+        for (var i = 0; i < params.text.length; i++) {
+          this.renderOneConfig(this.rootContainer, params, params.text[i]);
+        }
+        var configNodes = this.configContainer.getElementsByClassName("config");
+        for (var i = 0; i < configNodes.length; i++) {
+          configNodes[i].className =
+            parseInt(params.config, 10) === i ? "config active" : "config";
+        }
+        var filterNodes = this.filterContainer.getElementsByClassName("filter");
+        for (var i = 0; i < configNodes.length; i++) {
+          filterNodes[i].className =
+            parseInt(params.filter, 10) === i ? "filter active" : "filter";
+        }
+      }.bind(this);
     },
 
     renderOneConfig(parentNode, params, text) {
       var config;
       if (params.config !== undefined) {
-        config = configs[params.config];
+        config = configs[parseInt(params.config, 10)] || configs[0];
       } else {
         config = this.randomChoice(configs);
       }
-
+      if (params.filter !== undefined) {
+        filter = filters[parseInt(params.filter, 10)] || filters[0];
+      } else {
+        filter = filters[0];
+      }
       var containerNode = document.createElement("div");
       containerNode.className = "container";
       parentNode.appendChild(containerNode);
@@ -248,7 +297,7 @@ function MitsuhikoApp() {
             widthFactor,
             heightFactor,
             text,
-            config.textColor
+            filter.textColor
           );
         }.bind(this);
       }.bind(this);
@@ -256,12 +305,12 @@ function MitsuhikoApp() {
       containerNode.appendChild(imageNode);
 
       imageNode.src = config.image;
-      imageNode.style.filter = config.imageFilter || "none";
+      imageNode.style.filter = filter.imageFilter || "none";
     }
   };
 }
 
 window.onload = function() {
   var app = MitsuhikoApp();
-  app.init(configs);
+  app.init(configs, filters);
 };
