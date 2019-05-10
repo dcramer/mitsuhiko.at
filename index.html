@@ -1,62 +1,65 @@
 <html>
-  <link rel="icon" href="favicon.ico?v=1" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Baloo+Bhai"
-    rel="stylesheet"
-  />
-  <style>
-    *,
-    *:after,
-    *:before {
-      padding: 0;
-      margin: 0;
-    }
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-    body {
-      background: url("sentry-pattern.png");
-    }
-    .root {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      align-items: center;
-      position: relative;
-      flex: 1;
-    }
-    .container {
-      flex-grow: 1;
-      position: relative;
-      overflow: hidden;
-      max-height: 100%;
-    }
-    .two-col .container {
-      max-width: 50%;
-    }
-    .background {
-      z-index: 50;
-    }
-    .letter {
-      font-family: "Stylish", sans-serif;
-      color: #000;
-      z-index: 100;
-      display: flex;
-      position: absolute;
-      text-align: center;
-    }
-    .letter div {
-      flex: 1;
-      align-self: center;
-    }
-  </style>
-  <script src="app.js" charset="utf-8"></script>
+  <head>
+    <title>mitsuhiko.at</title>
+    <link rel="icon" href="favicon.ico?v=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Baloo+Bhai"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *:after,
+      *:before {
+        padding: 0;
+        margin: 0;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      body {
+        background: url("sentry-pattern.png");
+      }
+      .root {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        flex: 1;
+      }
+      .container {
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden;
+        max-height: 100%;
+      }
+      .two-col .container {
+        max-width: 50%;
+      }
+      .background {
+        z-index: 50;
+      }
+      .letter {
+        font-family: "Stylish", sans-serif;
+        color: #000;
+        z-index: 100;
+        display: flex;
+        position: absolute;
+        text-align: center;
+      }
+      .letter div {
+        flex: 1;
+        align-self: center;
+      }
+    </style>
+    <script src="app.js" charset="utf-8"></script>
+  </head>
   <body>
     <div id="container"></div>
   </body>
