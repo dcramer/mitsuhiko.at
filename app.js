@@ -41,13 +41,10 @@ function MitsuhikoApp() {
       }
     },
 
-    drawText: function(imageNode, parentNode, text) {
+    drawText: function(parentNode, boxes, widthFactor, heightFactor, text) {
       this.clearChildren(parentNode);
 
-      var widthFactor = imageNode.width / this.config.width;
-      var heightFactor = imageNode.height / this.config.height;
-
-      var numBoxNodes = this.config.boxes.length;
+      var numBoxNodes = boxes.length;
       var numTextNodes = text.length;
 
       var textOffset = 0;
@@ -61,7 +58,7 @@ function MitsuhikoApp() {
       }
 
       for (var i = 0, boxConfig, boxNode, textNode; i < numBoxNodes; i++) {
-        boxConfig = this.config.boxes[i];
+        boxConfig = boxes[i];
         boxNode = document.createElement("div");
         boxNode.style.width = boxConfig.width * widthFactor;
         boxNode.style.height = boxConfig.height * heightFactor;
@@ -95,6 +92,7 @@ function MitsuhikoApp() {
       }
       if (params.buff === "1") params.config = 2;
       else if (params.poland === "1") params.config = 0;
+      params.text = params.text.split("|");
       return params;
     },
 
@@ -103,55 +101,49 @@ function MitsuhikoApp() {
       return choices[index];
     },
 
-    init: function(configs, parentNode) {
-      this.configs = configs;
-
+    bindConfigFromParams: function() {
       var params = this.parseQueryParams();
       this.alignText = params.alignText || "center";
       this.fontFamily = params.fontFamily || DEFAULT_FONT;
-      let textNodes = params.text.split("|");
-      this.fontSize = textNodes.length > 1 ? "3vmax" : "6vmax";
+      this.fontSize = params.text.length > 1 ? "3vmax" : "6vmax";
+      return params;
+    },
 
-      if (params.config !== undefined) {
-        this.config = configs[params.config];
-      } else {
-        this.config = this.randomChoice(configs);
-      }
+    init: function(configs, parentNode) {
+      var params = this.bindConfigFromParams();
 
       if (!parentNode) {
         parentNode = document.body;
       }
 
       this.rootContainer = document.createElement("div");
-      this.rootContainer.className = "root";
-      if (textNodes.length > 1) {
-        this.rootContainer.className =
-          this.rootContainer.className + " two-col";
-      }
+      this.rootContainer.className =
+        params.text.length > 1 ? "root two-col" : "root";
       parentNode.appendChild(this.rootContainer);
 
-      for (var i = 0; i < textNodes.length; i++) {
-        this.renderOneConfig(this.rootContainer, this.config, textNodes[i]);
+      for (var i = 0; i < params.text.length; i++) {
+        this.renderOneConfig(this.rootContainer, params, params.text[i]);
       }
 
-      // window.onhashchange = function() {
-      //   var params = this.parseQueryParams();
-      //   this.alignText = params.alignText || "center";
-      //   this.fontFamily = params.fontFamily || DEFAULT_FONT;
-      //   this.text = params.text;
-      //   if (params.config !== undefined) {
-      //     this.config = configs[params.config];
-      //     imageNode.onload = function() {
-      //       this.drawText(imageNode, lettersNode);
-      //     }.bind(this);
-      //     imageNode.src = this.config.image;
-      //   } else {
-      //     this.drawText(imageNode, lettersNode);
-      //   }
-      // }.bind(this);
+      window.onhashchange = function() {
+        var params = this.bindConfigFromParams();
+        this.clearChildren(this.rootContainer);
+        this.rootContainer.className =
+          params.text.length > 1 ? "root two-col" : "root";
+        for (var i = 0; i < params.text.length; i++) {
+          this.renderOneConfig(this.rootContainer, params, params.text[i]);
+        }
+      }.bind(this);
     },
 
-    renderOneConfig(parentNode, config, text) {
+    renderOneConfig(parentNode, params, text) {
+      var config;
+      if (params.config !== undefined) {
+        config = configs[params.config];
+      } else {
+        config = this.randomChoice(configs);
+      }
+
       var containerNode = document.createElement("div");
       containerNode.className = "container";
       parentNode.appendChild(containerNode);
@@ -162,16 +154,31 @@ function MitsuhikoApp() {
 
       var imageNode = document.createElement("img");
       imageNode.onload = function() {
-        this.drawText(imageNode, lettersNode, text);
+        var widthFactor = imageNode.width / config.width;
+        var heightFactor = imageNode.height / config.height;
+
+        this.drawText(
+          lettersNode,
+          config.boxes,
+          widthFactor,
+          heightFactor,
+          text
+        );
+
+        window.onresize = function() {
+          this.drawText(
+            lettersNode,
+            config.boxes,
+            widthFactor,
+            heightFactor,
+            text
+          );
+        }.bind(this);
       }.bind(this);
       imageNode.className = "background";
       containerNode.appendChild(imageNode);
 
       imageNode.src = config.image;
-
-      window.onresize = function() {
-        this.drawText(imageNode, lettersNode, text);
-      }.bind(this);
     }
   };
 }
