@@ -50,7 +50,11 @@ function MitsuhikoApp() {
       var widthFactor = this.imageNode.width / this.config.width;
       var heightFactor = this.imageNode.height / this.config.height;
 
-      for (var i = 0, boxConfig, boxNode; i < this.config.boxes.length; i++) {
+      for (
+        var i = 0, boxConfig, boxNode, textNode;
+        i < this.config.boxes.length;
+        i++
+      ) {
         boxConfig = this.config.boxes[i];
         boxNode = document.createElement("div");
         boxNode.style.width = boxConfig.width * widthFactor;
@@ -60,7 +64,10 @@ function MitsuhikoApp() {
         boxNode.style.transform = "rotate(" + boxConfig.rotate + ")";
         boxNode.style.fontSize = "6vw";
         boxNode.className = "letter";
-        boxNode.innerText = this.text[i] || "";
+
+        textNode = document.createElement("div");
+        textNode.innerText = this.text[i] || "";
+        boxNode.appendChild(textNode);
         this.lettersNode.appendChild(boxNode);
       }
     },

@@ -14,14 +14,17 @@
     .background {
       z-index: 50;
     }
-    .letters {
-    }
     .letter {
       font-family: "Stylish", sans-serif;
       color: #000;
       z-index: 100;
+      display: flex;
       position: absolute;
       text-align: center;
+    }
+    .letter div {
+      flex: 1;
+      align-self: center;
     }
   </style>
   <script src="app.js"></script>
