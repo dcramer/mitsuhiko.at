@@ -54,7 +54,7 @@ function MitsuhikoApp() {
       var numTextNodes = this.text.length;
       var textOffset =
         numTextNodes < numBoxNodes
-          ? parseInt((numBoxNodes % numTextNodes) / 2, 10)
+          ? parseInt((numBoxNodes - numTextNodes) / 2, 10)
           : 0;
 
       for (var i = 0, boxConfig, boxNode, textNode; i < numBoxNodes; i++) {
