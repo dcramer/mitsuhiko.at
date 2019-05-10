@@ -1,35 +1,35 @@
+var DEFAULT_FONT = "Baloo Bhai";
+
+var CORE_BOX_CONFIG = [
+  { width: 280, height: 445, x: 772, y: 800, rotate: "9.5deg" },
+  { width: 265, height: 440, x: 1090, y: 910, rotate: "5deg" },
+  { width: 250, height: 440, x: 1370, y: 930, rotate: "1deg" },
+  { width: 245, height: 410, x: 1655, y: 863, rotate: "0" },
+  { width: 245, height: 410, x: 1925, y: 840, rotate: "0" },
+  { width: 245, height: 420, x: 2230, y: 885, rotate: "9deg" },
+  { width: 240, height: 400, x: 2540, y: 840, rotate: "-2deg" },
+  { width: 245, height: 400, x: 2825, y: 790, rotate: "-2deg" },
+  { width: 250, height: 405, x: 3130, y: 800, rotate: "-3.5deg" }
+];
+
 var configs = [
   {
-    image: "image1-compressed.jpg",
+    image: "image1.jpg",
     width: 4032,
     height: 3024,
-    boxes: [
-      { width: 285, height: 460, x: 770, y: 790, rotate: "8deg" },
-      { width: 285, height: 460, x: 1080, y: 900, rotate: "4deg" },
-      { width: 255, height: 450, x: 1370, y: 925, rotate: "1deg" },
-      { width: 255, height: 430, x: 1650, y: 850, rotate: "0" },
-      { width: 255, height: 430, x: 1920, y: 830, rotate: "0" },
-      { width: 255, height: 440, x: 2225, y: 875, rotate: "9deg" },
-      { width: 255, height: 430, x: 2530, y: 825, rotate: "-2deg" },
-      { width: 255, height: 420, x: 2820, y: 780, rotate: "-3deg" },
-      { width: 260, height: 420, x: 3125, y: 790, rotate: "-3.5deg" }
-    ]
+    boxes: CORE_BOX_CONFIG
   },
   {
-    image: "image2-compressed.jpg",
+    image: "image2.jpg",
     width: 4032,
     height: 3024,
-    boxes: [
-      { width: 285, height: 460, x: 770, y: 790, rotate: "8deg" },
-      { width: 285, height: 460, x: 1080, y: 900, rotate: "4deg" },
-      { width: 255, height: 450, x: 1370, y: 925, rotate: "1deg" },
-      { width: 255, height: 430, x: 1650, y: 850, rotate: "0" },
-      { width: 255, height: 430, x: 1920, y: 830, rotate: "0" },
-      { width: 255, height: 440, x: 2225, y: 875, rotate: "9deg" },
-      { width: 255, height: 430, x: 2530, y: 825, rotate: "-2deg" },
-      { width: 255, height: 420, x: 2820, y: 780, rotate: "-3deg" },
-      { width: 260, height: 420, x: 3125, y: 790, rotate: "-3.5deg" }
-    ]
+    boxes: CORE_BOX_CONFIG
+  },
+  {
+    image: "image3.jpg",
+    width: 4032,
+    height: 3024,
+    boxes: CORE_BOX_CONFIG
   }
 ];
 
@@ -93,6 +93,8 @@ function MitsuhikoApp() {
           params.text = window.decodeURIComponent(param[0]);
         }
       }
+      if (params.buff === "1") params.config = 2;
+      else if (params.poland === "1") params.config = 0;
       return params;
     },
 
@@ -106,7 +108,7 @@ function MitsuhikoApp() {
 
       var params = this.parseQueryParams();
       this.alignText = params.alignText || "center";
-      this.fontFamily = params.fontFamily || "Stylish";
+      this.fontFamily = params.fontFamily || DEFAULT_FONT;
       this.text = params.text;
 
       if (params.config !== undefined) {
@@ -138,7 +140,7 @@ function MitsuhikoApp() {
       window.onhashchange = function() {
         var params = this.parseQueryParams();
         this.alignText = params.alignText || "center";
-        this.fontFamily = params.fontFamily || "Stylish";
+        this.fontFamily = params.fontFamily || DEFAULT_FONT;
         this.text = params.text;
         if (params.config !== undefined) {
           this.config = configs[params.config];
