@@ -3,7 +3,7 @@ var DEFAULT_FONT = "Baloo Bhai";
 var CORE_BOX_CONFIG = [
   { width: 280, height: 445, x: 772, y: 815, rotate: "9.5deg" },
   { width: 265, height: 440, x: 1090, y: 925, rotate: "5deg" },
-  { width: 250, height: 440, x: 1370, y: 930, rotate: "1deg" },
+  { width: 250, height: 440, x: 1370, y: 950, rotate: "1deg" },
   { width: 245, height: 410, x: 1655, y: 870, rotate: "0" },
   { width: 245, height: 410, x: 1925, y: 845, rotate: "0" },
   { width: 245, height: 420, x: 2230, y: 890, rotate: "9deg" },
